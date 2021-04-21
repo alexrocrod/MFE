@@ -92,15 +92,21 @@ T=np.zeros(k)
 Emed=np.zeros(k)
 i=0
 for E0 in np.linspace(np.sqrt(2),80*np.sqrt(2),k) :
-    (Emed[i],EDmed) = fex28b(E0)
-    T[i]=EDmed
-    print("Sim a temperatura T= ",T[i])
+    (Emed[i],T[i]) = fex28b(E0)
+    print("Simulação a temperatura T= ",T[i])
     i+=1
 
 
 Tt=np.linspace(T[0],T[-1],40)
 EmedT=np.pi*Tt**3*zeta(3)
 plt.plot(T,Emed,'x',Tt,EmedT,'r-')
+
+
+
+####################################
+## c)
+
+
 
 
 
