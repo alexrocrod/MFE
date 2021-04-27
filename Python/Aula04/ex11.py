@@ -11,7 +11,6 @@ N = 30 # 10 particulas
 
 
 Pi = np.zeros((N+1,N+1))
-print(Pi)
 
 # Precorrer todos os estados
 for N1 in range(N + 1):
@@ -26,7 +25,8 @@ for N1 in range(N + 1):
     if i2 >= 0:
         Pi[i2, N1] = N1 / N
 
-print(Pi)
+print("Pi",Pi,"\n")
+
 
 ####################################
 # b)
@@ -45,34 +45,34 @@ plt.plot(n1, ps1, 'or', n1, pst, '-b')
 
 ####################################
 
-# npassos=1000
-# N1=np.zeros(npassos+1)
-# N1_med=np.zeros(npassos+1)
-# N1[0]=N
+npassos=1000
+N1=np.zeros(npassos+1)
+N1_med=np.zeros(npassos+1)
+N1[0]=N
 
-# for t in range(npassos):
-#     w1=1-N1[t]/N # prob subir
-#     # w2 = N1/N # prob diminuir
-#     if np.random.rand(1) <= w1:
-#         N1[t+1]= N1[t]+1
-#     else:
-#         N1[t+1]= N1[t]-1
+for t in range(npassos):
+    w1=1-N1[t]/N # prob subir
+    # w2 = N1/N # prob diminuir
+    if np.random.rand(1) <= w1:
+        N1[t+1]= N1[t]+1
+    else:
+        N1[t+1]= N1[t]-1
 
-#     N1_med+=N1
+    N1_med+=N1
 
-# N1_med/=npassos
+N1_med/=npassos
 
 
-# plt.figure(2)
-# plt.plot(np.arange(0, npassos + 1), N1)
+plt.figure(2)
+plt.plot(np.arange(0, npassos + 1), N1)
 
-# t_st = 100
-# h, xh = np.histogram(N1[t_st:], np.arange(0, N + 1))
-# h = h / np.sum(h)
+t_st = 100
+h, xh = np.histogram(N1[t_st:], np.arange(0, N + 1))
+h = h / np.sum(h)
 
-# plt.figure(3)
-# plt.plot(n1, ps1, 'or', n1, pst, '-b')
-# plt.bar(xh[:-1], h)
+plt.figure(3)
+plt.plot(n1, ps1, 'or', n1, pst, '-b')
+plt.bar(xh[:-1], h)
 
 ####################################
 N=30
