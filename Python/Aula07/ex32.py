@@ -70,14 +70,6 @@ def metropolis(T,nequi,nmedidas,N,nmax):
             nyv= ikv // nmax
             dE = (nxv**2+nyv**2) - (nx**2+ny**2)
             # prob de aceitacao
-            # print("nvs[ikv]",nvs[ikv])
-            # print("nk[ik]+1",nk[ik]+1)
-            # print("nvs[ikv]*nk[ik]",nvs[ikv]*nk[ik])
-            if (nvs[ikv]*nk[ik])==0:
-                print("shit")
-                print("nvs[ikv]",nvs[ikv])
-                print("nk[ik]",nk[ik])
-
             pA=np.minimum(1,nvs[ik]*(nk[ikv]+1)/(nvs[ikv]*nk[ik])*np.exp(-dE/T)) ## preciso alterar com +2 e +1 nos nks???
             if np.random.rand() <=pA:
                 E += dE
@@ -98,15 +90,16 @@ def metropolis(T,nequi,nmedidas,N,nmax):
 
 nmax=50
 N=100
-nmedidas=20000
+nmedidas=5000#20000
 nequi=5000
 
-nTs=2 #30
+nTs=30 #30
 Ts= np.linspace(3,300,nTs)
 Emeds=np.zeros(nTs)
 E2meds=np.zeros(nTs)
 Cv=np.zeros(nTs)
 nkmed=np.zeros(nmax**2)
+
 
 for i in range(nTs):
     print("Simulação",i+1,"T",Ts[i])
@@ -116,8 +109,14 @@ for i in range(nTs):
     print(Emeds[i],E2meds[i],Cv[i])
     # plt.figure(1)
     # plt.pcolormesh([Ts[:i],nkmed])
-    plt.figure(2)
-    plt.plot(Ts[:i],Emeds[:i],'kx')
-    plt.figure(3)
-    plt.plot(Ts[:i],Cv[:i],'kx')
-    plt.show()
+    # plt.figure(2)
+    # plt.plot(Ts[:i+1],Emeds[:i+1],'kx')
+    # plt.figure(3)
+    # plt.plot(Ts[:i+1],Cv[:i+1],'kx')
+    # plt.show()
+
+plt.figure(2)
+plt.plot(Ts,Emeds,'kx')
+plt.figure(3)
+plt.plot(Ts,Cv,'kx')
+plt.show()
