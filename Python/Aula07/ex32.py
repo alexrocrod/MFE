@@ -12,14 +12,14 @@ def lista_vizinhos(nmax):
         # vizinho 1
         nx1=nx+1
         ny1=ny 
-        if nx1 <= nmax:
+        if nx1 < nmax:
             iv = nx1+nmax*ny1
             listav[i,int(nv[i])]=iv
             nv[i]+=1
         # vizinho 2
         nx1=nx
         ny1=ny+1 
-        if ny1 <= nmax:
+        if ny1 < nmax:
             iv = nx1+nmax*ny1
             listav[i,int(nv[i])]=iv
             nv[i]+=1
