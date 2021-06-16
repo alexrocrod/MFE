@@ -5,7 +5,6 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import fmin
 
 
-# ex38 da v3
 t= np.array(range(15))
 ie= np.array([1, 3, 7, 25, 72, 222 , 282, 256, 233, 189, 123, 70, 25,11,4])
 

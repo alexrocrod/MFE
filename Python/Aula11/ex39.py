@@ -134,7 +134,6 @@ def MC_t_continuo(N, beta, gama, e, kmax, n_classe, classe, ntransicoes):
     return (t,ns,ni,nr)
 
 
-# ex39 da v3
 N = int(1e2)
 c = 1 # nº medio de arestas em cada vertice
 listav,nv,S,comp=rede_aleatoria(N,c)
