@@ -2,10 +2,12 @@ close all; clear all;
 % Exercicio 35
 
 N = 200;
-npassos=20000;
+% N = 100;
+npassos=4000;
 nequi=2000;
 nmedidas=npassos-nequi;
-nmax=60;
+% nmax=60;
+nmax=30;
 TF=(3*N/(4*pi))^(2/3); % temperatura de fermi
 % Energia de Fermi - exp teorica
 EF=(3*N/(4*pi))^(2/3);
@@ -21,7 +23,7 @@ for T=Tv
     fprintf(1,'T=%f, <E>=%f,  mu=%f\n', T, Emedio(ic)-3/4,  mu(ic));
 end
 
-% Capacidade térmica
+% Capacidade tï¿½rmica
 Cv=(E2medio-Emedio.^2)./Tv.^2;
 
 % Temperaturas
@@ -35,7 +37,7 @@ Et=N*3*EF/5*(1+5*pi^2/12*(Tt1/TF).^(5/2));
 mut=EF*(1-pi^2/12*(Tt1/TF).^2);
 Cvt=N*(pi^2/2)*(Tt1/TF);
 
-% Gás ideal clássico
+% Gï¿½s ideal clï¿½ssico
 EGI=3*N*Tt2/2;
 muGI=Tt2.*log(4/(sqrt(pi)*3)*(TF./Tt2).^(3/2));
 CvGI=3*N*ones(length(Tt2),1)/2;
@@ -49,19 +51,19 @@ plot(Tv/(TF2-3/4),(Emedio-3*N/4)/(N*EF2),'kx',Tt1/TF,Et/(N*EF),'r-',Tt2/TF,EGI/(
 % formulas teoricas assumem condicoes fronteira periodicas.
 title('Energia')
 xlabel('T/TF'); ylabel('<E>/N')
-legend('Solução','T<Tc','Gás ideal clássico')
+legend('Soluï¿½ï¿½o','T<Tc','Gï¿½s ideal clï¿½ssico')
 
 figure(2)
 plot(Tv/(TF2-3/4),mu/(EF2-3/4),'kx',Tt1/TF,mut/EF,'r-', Tt2/TF,muGI/EF,'g-')
-title('potencial químico')
+title('potencial quï¿½mico')
 xlabel('T/TF'); ylabel('mu/EF')
-legend('Solução','T<Tc','Gás ideal clássico')
+legend('Soluï¿½ï¿½o','T<Tc','Gï¿½s ideal clï¿½ssico')
 
 figure(3)
 plot(Tv/(TF2-3/4),Cv/N,'k.',Tt1/TF,Cvt/N, 'r-',Tt2/TF,CvGI/N,'g-')
-title('Capacidade térmica')
+title('Capacidade tï¿½rmica')
 xlabel('T/TF'); ylabel('Cv/N')
-legend('Solução','T<Tc','Gás ideal clássico')
+legend('Soluï¿½ï¿½o','T<Tc','Gï¿½s ideal clï¿½ssico')
 
 
 
