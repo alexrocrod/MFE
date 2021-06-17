@@ -1,0 +1,7 @@
+close all; clear all; 
+% Exercício 31
+
+N=1000; % nº de particulas
+Nestados=10000; % nº de estados
+
+Tv=linspace()
