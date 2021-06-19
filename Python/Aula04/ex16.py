@@ -25,6 +25,7 @@ def huffman(p):
     while (nc_trab>1):
         ### 1o carater
         i1 = np.where(p_trab == np.min(p_trab[:nc_trab]))[0][0]
+        # i1 = np.nonzero(p_trab == np.min(p_trab[:nc_trab]))[0][0]
         p1 = np.min(p_trab[:nc_trab])
         p_trab[i1] = p_trab[nc_trab]
         lab1=label[i1]
@@ -33,6 +34,7 @@ def huffman(p):
         nc_trab-=1
         ### 2o carater
         i2 = np.where(p_trab == np.min(p_trab[:nc_trab]))[0][0]
+        # i2 = np.nonzero(p_trab == np.min(p_trab[:nc_trab]))[0][0]
         p2 = np.min(p_trab[:nc_trab])
         p_trab[i2] = p_trab[nc_trab] 
         lab2=label[i2]

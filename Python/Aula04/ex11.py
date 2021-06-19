@@ -33,7 +33,8 @@ print("Pi",Pi,"\n")
 
 D, V = np.linalg.eig(Pi)
 
-idx_vp1 = np.where(D == max(D))[0][0]
+# idx_vp1 = np.where(D == max(D))[0][0]
+idx_vp1 = np.nonzero(D == max(D))[0][0]
 
 ps1 = V[:, idx_vp1] / np.sum(V[:, idx_vp1])
 

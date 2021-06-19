@@ -59,7 +59,8 @@ def metropolis(npassos,nequi,T,L):
     # definir estado inicial
     u = np.random.rand(N)
     s=np.ones(N)
-    s[np.where(u<=0.5)]=-1
+    # s[np.where(u<=0.5)]=-1
+    s[np.nonzero(u<=0.5)]=-1
     # print(u)
     # print(s)
     listav,nv=lista_vizinhos(L)
