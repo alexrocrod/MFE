@@ -250,3 +250,46 @@ def metropolis_Fermioes_3D(T,nequi,nmedidas,N,nmax):
             nkmedio += nk
 
     return Emedio/nmedidas,E2medio/nmedidas,nkmedio/nmedidas,Ef2
+
+# metropolis para Grande Canonico (ex36)
+def metropolisGC(N,V,bmu,npassos,nequi):
+
+    nmedidas = npassos-nequi
+    ni = np.zeros(V, dtype=np.int16) #existe ou nao particula
+    part_sitio = np.zeros(V, dtype=np.int64)
+    Nt = np.zeros(nmedidas, dtype=np.int64)
+
+    # colocacao inicial das particulas na rede
+    n = 0
+    while n < N :
+        isit = np.random.randint(V)
+        if ni[isit] == 0:
+            ni[isit] = 1
+            part_sitio[n] = isit
+            n += 1
+
+    for t in range(npassos):
+        for act in range(V):
+            if np.random.rand() <= 0.5:
+                # adicionamos
+                # escolher sitio ao acaso
+                isit = np.random.randint(V)
+                if ni[isit] == 0:
+                    pA = np.minimum(1,V / (N + 1) *np.exp(bmu))
+                    if np.random.rand() <= pA:
+                        ni[isit] = 1
+                        N += 1
+                        part_sitio[N] = isit
+            else:
+                # removemos
+                ip = np.random.randint(N) #escolher uma particula
+                pA = np.minimum(1, N / V *np.exp(-bmu))
+                if np.random.rand() <= pA:
+                    isit = part_sitio[ip]
+                    ni[isit] = 0
+                    part_sitio[ip] = part_sitio[N]
+                    N -= 1
+        if t > nequi:
+            Nt[t-nequi] = N
+                
+    return Nt
