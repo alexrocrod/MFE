@@ -104,6 +104,7 @@ def metropolis_Bosoes_2D(T,nequi,nmedidas,N,nmax):
 
 
 # Metropolis para fermioes 2D
+# pode ter erros, da mal no ex34
 def metropolis_Fermioes_2D(T,nequi,nmedidas,N,nmax):
 
     # PASSO 1
@@ -119,14 +120,13 @@ def metropolis_Fermioes_2D(T,nequi,nmedidas,N,nmax):
     for nx in range(nmax):
         for ny in range(nmax):
             ik = nx + nmax * ny
-            Eestado[ik] = nx**2 + ny**2
+            Eestado[ik] = (nx+1)**2 + (ny+1)**2
 
     # Eestado_ordenado, ik_ordem = np.sort(Eestado, 'ascend') # ordem crescente
-    Eestado_ordenado = np.sort(Eestado) # ordem crescente
-    ik_ordem = np.argsort(Eestado) # ordem crescente
+    Eestado_ordenado = np.sort(Eestado)
+    ik_ordem = np.argsort(Eestado)
 
-    # colocar N particulas nos respectivos estados de forma crescente em
-    # energia
+    # colocar N particulas nos respectivos estados de forma crescente em energia
     E = 0
     for i in range(N):
         estado_particula[i] = ik_ordem[i]
@@ -140,34 +140,28 @@ def metropolis_Fermioes_2D(T,nequi,nmedidas,N,nmax):
     # PASSOS 2
     for t in range(npassos):
         for act in range(N):
-            # PASSO 2A
             ip=np.random.randint(N)
             ik=estado_particula[ip]
-            # PASSO 2B
+
             # estado vizinho de ik escolhido ao acso de entre nv(ik)
             ikv=lv[ik,np.random.randint(nv[ik])]
             
-            # so se fazem os calculos se o estado que se esta a considerar nao
-            # tiver ja uma particula
+            # so se o estado nao tiver ja uma particula
             if nk[ikv] == 0:
-                # as energias ja estao calculadas por isso basta seleccionar o
-                # valor correspondente a particula escolhida aleatoriamente
+
                 Epi = Eestado[ik]
                 Epf = Eestado[ikv]
                 # variacao de energia
                 dE=Epf-Epi
                 
-                # PASSOS 2C
                 # probabilidade de aceitacao
                 pA=np.minimum(1, nv[ik] * (nk[ikv]+1) / (nv[ikv] * nk[ik]) * np.exp(-dE/T))
                 
                 if np.random.rand()<pA:
-                    # PASSO 2D
                     estado_particula[ip] = ikv
                     nk[ik] -= 1
                     nk[ikv] += 1
                     E += dE
-        # PASSO 2E
         if t > nequi:
             Emedio += E
             E2medio += E**2
@@ -175,14 +169,17 @@ def metropolis_Fermioes_2D(T,nequi,nmedidas,N,nmax):
 
     return Emedio/nmedidas,E2medio/nmedidas,nkmedio/nmedidas
 
+
+
 # Metropolis para fermioes 3D (ex35)
+# pode ter erros, da mal no ex35
 def metropolis_Fermioes_3D(T,nequi,nmedidas,N,nmax):
 
     # PASSO 1
     lv,nv=lista_vizinhos_3D(nmax)
 
     nk=np.zeros(nmax**3,dtype=np.int64)
-    nkmedio=nk
+    nkmedio=np.zeros(nmax**3,dtype=np.int64)
 
     # calcular a energia de cada estado
     estado_particula = np.zeros(N,dtype=np.int64)
@@ -191,15 +188,15 @@ def metropolis_Fermioes_3D(T,nequi,nmedidas,N,nmax):
     for nx in range(nmax):
         for ny in range(nmax):
             for nz in range(nmax):
-                ik = nx + nmax * ny + nmax**2*nz
-                Eestado[ik] = (nx**2 + ny**2 + nz**2)/4
+                ik = nx + nmax * ny + nmax**2 * nz
+                Eestado[ik] = ((nx+1)**2 + (ny+1)**2 + (nz+1)**2)/4
 
     # Eestado_ordenado, ik_ordem = np.sort(Eestado, 'ascend') # ordem crescente
-    Eestado_ordenado = np.sort(Eestado) # ordem crescente
-    ik_ordem = np.argsort(Eestado) # ordem crescente
+    Eestado_ordenado = np.sort(Eestado)
+    ik_ordem = np.argsort(Eestado)
+    print(ik_ordem)
 
-    # colocar N particulas nos respectivos estados de forma crescente em
-    # energia
+    # colocar N particulas nos respectivos estados de forma crescente em energia
     E = 0
     for i in range(N):
         estado_particula[i] = ik_ordem[i]
@@ -211,47 +208,42 @@ def metropolis_Fermioes_3D(T,nequi,nmedidas,N,nmax):
     E2medio = 0
 
     # Energia Fermi
-
     Ef2 = Eestado_ordenado[-1]
 
     # PASSOS 2
     for t in range(npassos):
         for act in range(N):
-            # PASSO 2A
-            ip=np.random.randint(N)
-            ik=estado_particula[ip]
-            # PASSO 2B
-            # estado vizinho de ik escolhido ao acso de entre nv(ik)
-            ikv=lv[ik,np.random.randint(nv[ik])]
+
+            ip = np.random.randint(N)
+            ik = estado_particula[ip]
             
-            # so se fazem os calculos se o estado que se esta a considerar nao
-            # tiver ja uma particula
+            # estado vizinho de ik escolhido ao acso de entre nv(ik)
+            ikv = lv[ik, np.random.randint(nv[ik])]
+            
+            # so se o estado nao tiver ja uma particula
             if nk[ikv] == 0:
-                nz= ik // (nmax**2) + 1
-                nx= (ik % (nmax**2)) % nmax + 1
-                ny= (ik % (nmax**2)) // nmax + 1 
+                # nz= ik // (nmax**2) + 1
+                # nx= (ik % (nmax**2)) % nmax + 1
+                # ny= (ik % (nmax**2)) // nmax + 1 
+                # nzv= ikv // (nmax**2) + 1 
+                # nxv= (ikv % (nmax**2)) % nmax + 1
+                # nyv= (ikv % (nmax**2))// nmax + 1
+                # Epi=(nx**2+ny**2+nz**2)/4
+                # Epf=(nxv**2+nyv**2+nzv**2)/4
 
-                nzv= ikv // (nmax**2) + 1 
-                nxv= (ikv % (nmax**2)) % nmax + 1
-                nyv= (ikv % (nmax**2))// nmax + 1
+                Epi = Eestado[ik]
+                Epf = Eestado[ikv]
 
-                Epi=(nx**2+ny**2+nz**2)/4
+                dE = Epf - Epi
                 
-                Epf=(nxv**2+nyv**2+nzv**2)/4
-
-                dE=Epf-Epi
-                
-                # PASSOS 2C
                 # probabilidade de aceitacao
-                pA=np.minimum(1, nv[ik] * (nk[ikv]+1) / (nv[ikv] * nk[ik]) * np.exp(-dE/T))
+                pA = np.minimum(1, nv[ik] * (nk[ikv]+1) / (nv[ikv] * nk[ik]) * np.exp(-dE/T))
                 
-                if np.random.rand()<pA:
-                    # PASSO 2D
+                if np.random.rand() < pA:
                     estado_particula[ip] = ikv
                     nk[ik] -= 1
                     nk[ikv] += 1
                     E += dE
-        # PASSO 2E
         if t > nequi:
             Emedio += E
             E2medio += E**2

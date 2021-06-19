@@ -6,6 +6,12 @@ from metropolis import metropolis_Fermioes_2D
 
 # da overflow logo nas 1as iteracoes 
 
+# algo mal, usar matlab
+# ERROS:
+# z da basicamente 0 
+# ...
+
+
 if __name__ == '__main__':
 
     nmax = 60 #60
@@ -19,15 +25,18 @@ if __name__ == '__main__':
 
     Emeds = np.zeros(nTs)
     E2meds = np.zeros(nTs)
+    z = np.zeros(nTs)
     nkmed = np.zeros((nmax**2,nTs))
 
     for i,T in enumerate(Ts):
         print("Simulação",i+1,"T",T)
         Emeds[i], E2meds[i], nkmed[:,i] = metropolis_Fermioes_2D(T,nequi,nmedidas,N,nmax)
+        z[i]=nkmed[0,i] / (1-nkmed[0,i] )
+        print(f'T={T}, <E>={Emeds[i]-2*N},  z={z[i]}')
 
+    print(z)
 
     Cv = (E2meds - Emeds**2) / (Ts**2)
-    z = nkmed[0,:] / (1-nkmed[0,:] )
 
     Tt = np.linspace(3 , 300, 300)
 
@@ -47,7 +56,7 @@ if __name__ == '__main__':
     plt.plot(Ts, Cv, 'kx', Tt, Cvt1, 'r-')
 
     plt.figure(3)
-    plt.plot(Ts, z, 'kx', Tt[1:], Zt[1:], 'r-')
+    plt.semilogy(Ts, z, 'kx', Tt[1:], Zt[1:], 'r-')
     plt.show()
 
 

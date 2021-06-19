@@ -4,7 +4,10 @@ from scipy.special import spence
 
 from metropolis import metropolis_Fermioes_3D
 
-# desprezei as cenas de EF2 
+# algo mal, usar matlab
+# ERROS:
+# mu da basicamente 0 
+# ...
 
 if __name__ == '__main__':
 
@@ -31,6 +34,7 @@ if __name__ == '__main__':
         Emeds[i], E2meds[i], nkmed[:,i], Ef2s[i] = metropolis_Fermioes_3D(T,nequi,nmedidas,N,nmax)
         mu[i]=3/4+T*np.log(nkmed[0,i]/(1-nkmed[0,i]))
         print(f'T={T}, <E>={Emeds[i]-3/4},  mu={mu[i]}')
+        
     # mu=3/4+Ts*np.log(nkmed[0,:]/(1-nkmed[0,:]))
     print(mu)
 
