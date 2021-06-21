@@ -4,8 +4,8 @@ import numpy as np
 def componentes(listav,nv):
     n,kmax=np.shape(listav)
     comp = np.zeros(n)
-    ver=np.zeros(n)
-    aver=np.zeros(n)
+    ver=np.zeros(n,dtype=np.int64)
+    aver=np.zeros(n,dtype=np.int64)
     n_aver=0
     rot=0
 
@@ -14,11 +14,11 @@ def componentes(listav,nv):
             ver[i]==1
             aver[n_aver]=i
             n_aver+=1
-            rot+=1
             comp[i]=rot
+            rot+=1
         while n_aver>0:
-            j=int(aver[n_aver])
             n_aver-=1
+            j=aver[n_aver]
             for jv in range(int(nv[j])):
                 comp[int(listav[j,jv])]=rot
                 if ver[int(listav[j,jv])]==0:
@@ -36,7 +36,7 @@ def rede_aleatoria(n,c):
     p=c/(n-1) #probabilide de uma aresta existir
     kmax=int(np.floor(10*c)) #numero maximo de vizinhos admitido
 
-    listav=np.zeros((n,kmax))
+    listav=np.zeros((n,kmax+1)) # ou kmax ???
     nv=np.zeros(n)
     S=np.zeros(n)
 
@@ -52,27 +52,29 @@ def rede_aleatoria(n,c):
     scomp=np.zeros(n)
     ncomps=int(np.max(comp))
     for rotulo in range(ncomps):
-        scomp[int(rotulo)]=np.sum(comp[comp==rotulo]) 
+        scomp[int(rotulo)]=(comp==rotulo).sum()
 
     S = np.max(scomp)
-    S=S/n
+    S = S/n
 
     return listav,nv,S,comp
     
 
-n=int(1E3)
+n=int(5e3) #1e4
 i=0
 cv=np.arange(0.5,3,0.1)
-S=np.zeros((len(cv),n))
-R=np.zeros((len(cv),n))
-smed=np.zeros((len(cv),n))
+S=np.zeros(len(cv))
+R=np.zeros(len(cv))
+smed=np.zeros(len(cv))
+
 for c in cv:
+    print(i+1,"de",len(cv))
     listav,nv,S[i],comp=rede_aleatoria(n,c)
     scomp=np.zeros(n)
     ncomps=int(np.max(comp))
     for rot in range(ncomps):
         rotulo=int(rot)
-        scomp[rotulo]=np.sum(comp[comp==rotulo])
+        scomp[rotulo]=(comp==rotulo).sum()
 
     S[i]=np.max(scomp)
     rS=np.argmax(scomp)
@@ -80,7 +82,7 @@ for c in cv:
     ns=np.zeros(n)
     for rot in range(ncomps):
         rotulo=int(rot)
-        if c>1:
+        if c>0:
             if rotulo != rS:
                 ns[int(scomp[rotulo])] +=1
         else:
@@ -93,10 +95,14 @@ for c in cv:
     smed[i]=np.sum(s**2*ns)/np.sum(s*ns)
     i+=1
 
-
+plt.figure(1)
 plt.plot(cv,S,'rx')
 plt.xlabel('c')
 plt.ylabel('S')
+
+plt.figure(2)
+plt.plot(cv,R,'rx',cv,smed,'ko')
+plt.xlabel('c'); plt.ylabel('R,<s>')
 
 
 
