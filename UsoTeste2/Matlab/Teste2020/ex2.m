@@ -81,26 +81,26 @@ label=0; % label das componentes
 while ip<N
     ip=ip+1;
     if lista_sitios(ip)==0 % ainda nao foi analisado
-     label=label+1; %aumenta label
-     lista_sitios(ip)=label; %atribui label
-   
-     % cria lista de vizinhos que necessariamente ainda nao tem
-    %label
-    la= listav(ip,1:nv(ip));
-    lista_sitios(la)=label;  % da o mesmo label aos vizinhos
-    na=numel(la);
-     % analisa a lista enquanto ela tiver sitios  
-    while na>0
-    i=la(1);  la=la(2:end);  %comeca pelo primeiro e remove-o da lista
-    la=[ la listav(i,lista_sitios(listav(i,1:nv(i)))==0)]; % adiciona a' lista os vizinhos  
-    %que ainda nao foram colocados na lista
-    
-    %atribui o mesmo label aos novos membros
-    lista_sitios(listav(i,lista_sitios(listav(i,1:nv(i)))==0))=label;
-    
-    na=numel(la); %determina o novo tamanho da lista
+         label=label+1; %aumenta label
+         lista_sitios(ip)=label; %atribui label
+
+         % cria lista de vizinhos que necessariamente ainda nao tem
+        %label
+        la= listav(ip,1:nv(ip));
+        lista_sitios(la)=label;  % da o mesmo label aos vizinhos
+        na=numel(la);
+         % analisa a lista enquanto ela tiver sitios  
+        while na>0
+            i=la(1);  la=la(2:end);  %comeca pelo primeiro e remove-o da lista
+            la=[ la listav(i,lista_sitios(listav(i,1:nv(i)))==0)]; % adiciona a' lista os vizinhos  
+            %que ainda nao foram colocados na lista
+
+            %atribui o mesmo label aos novos membros
+            lista_sitios(listav(i,lista_sitios(listav(i,1:nv(i)))==0))=label;
+
+            na=numel(la); %determina o novo tamanho da lista
+        end
     end
- end
 end
 end
 
