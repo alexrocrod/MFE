@@ -117,18 +117,18 @@ def metropolis(npassos,nequi,T,L):
 
 Tc=2.269
 
-L = 16 # 8, 16, 32, 64 (já é lento para 8)
+L = 8 # 8, 16, 32, 64 (já é lento para 8)
 N = L**2
-npassos = int(5e3) #int(1e4)
-nequi = int(5e2) #int(1e3)
+npassos = int(5e3) #int(1e5)
+nequi = int(5e2) #int(1e4)
 
 Ts=[1.5, 1.7, 1.9, 2.1, Tc, 2.3, 2.5, 2.7]
-iTc = np.nonzero(Ts==Tc)[0]
-# iTc = 4
-Emed=np.zeros((len(Ts),N))
-Mmed=np.zeros((len(Ts),N))
-Cv=np.zeros((len(Ts),N))
-Susc=np.zeros((len(Ts),N))
+# iTc = np.nonzero(Ts==Tc)[0]
+iTc = 4
+Emed=np.zeros(len(Ts))
+Mmed=np.zeros(len(Ts))
+Cv=np.zeros(len(Ts))
+Susc=np.zeros(len(Ts))
 
 
 i=0
@@ -139,26 +139,68 @@ for T in Ts:
 
 plt.figure(1)
 plt.plot(Ts,Emed/N,'x')
-plt.vlines(Tc,Emed[iTc]/N*0.9,Emed[iTc]/N*1.1)
+plt.vlines(Tc,Emed[iTc]/N*0.9,Emed[iTc]/N*1.1,'r')
 plt.xlabel('Ts')
 plt.ylabel('<E>/N')
 
 plt.figure(2)
 plt.plot(Ts,Cv/N,'x')
-plt.vlines(Tc,Cv[iTc]/N*0.9,Cv[iTc]/N*1.1)
+plt.vlines(Tc,Cv[iTc]/N*0.9,Cv[iTc]/N*1.1,'r')
 plt.xlabel('Ts')
 plt.ylabel('Cv/N')
 
 plt.figure(3)
 plt.plot(Ts,Mmed/N,'x')
-plt.vlines(Tc,Mmed[iTc]/N*0.9,Mmed[iTc]/N*1.1)
+plt.vlines(Tc,Mmed[iTc]/N*0.9,Mmed[iTc]/N*1.1,'r')
 plt.xlabel('Ts')
 plt.ylabel('<M>/N')
 
 plt.figure(4)
 plt.plot(Ts,Susc/N,'x')
-plt.vlines(Tc,Susc[iTc]/N*0.9,Susc[iTc]/N*1.1)
+plt.vlines(Tc,Susc[iTc]/N*0.9,Susc[iTc]/N*1.1,'r')
 plt.xlabel('Ts')
 plt.ylabel('Susc/N')
+
+
+# L = 16 # 8, 16, 32, 64 (já é lento para 8)
+L = 16 # 8, 16, 32, 64 (já é lento para 8)
+N = L**2
+
+Emed=np.zeros(len(Ts))
+Mmed=np.zeros(len(Ts))
+Cv=np.zeros(len(Ts))
+Susc=np.zeros(len(Ts))
+
+
+i=0
+for T in Ts:
+    print("Simulação a T: ",T,", L:",L)
+    Emed[i],Mmed[i],Cv[i],Susc[i] = metropolis(npassos,nequi,T,L)
+    i+=1
+
+plt.figure(1)
+plt.plot(Ts,Emed/N,'x')
+plt.vlines(Tc,Emed[iTc]/N*0.9,Emed[iTc]/N*1.1,'r')
+# plt.xlabel('Ts')
+# plt.ylabel('<E>/N')
+
+plt.figure(2)
+plt.plot(Ts,Cv/N,'x')
+plt.vlines(Tc,Cv[iTc]/N*0.9,Cv[iTc]/N*1.1,'r')
+# plt.xlabel('Ts')
+# plt.ylabel('Cv/N')
+
+plt.figure(3)
+plt.plot(Ts,Mmed/N,'x')
+plt.vlines(Tc,Mmed[iTc]/N*0.9,Mmed[iTc]/N*1.1,'r')
+# plt.xlabel('Ts')
+# plt.ylabel('<M>/N')
+
+plt.figure(4)
+plt.plot(Ts,Susc/N,'x')
+plt.vlines(Tc,Susc[iTc]/N*0.9,Susc[iTc]/N*1.1,'r')
+# plt.xlabel('Ts')
+# plt.ylabel('Susc/N')
+
 
 plt.show()
