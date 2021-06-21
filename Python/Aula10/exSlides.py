@@ -11,7 +11,7 @@ def componentes(listav,nv):
 
     for i in range(n):
         if ver[i]==0:
-            ver[i]==1
+            ver[i]=1
             aver[n_aver]=i
             n_aver+=1
             comp[i]=rot
