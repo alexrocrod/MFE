@@ -29,37 +29,6 @@ def componentes(listav,nv):
 
     return comp
 
-
-# def componentes(listav,nv):
-#     n,kmax=np.shape(listav)
-#     comp = np.zeros(n)
-#     ver = np.zeros(n)
-#     aver = np.zeros(n,dtype=np.int64)
-#     n_aver=-1
-#     rot=-1
-
-#     for i in range(n):
-#         if ver[i]==0:
-#             ver[i]==1
-#             n_aver+=1
-#             aver[n_aver]=i
-#             rot+=1
-#             comp[i]=rot
-#         while n_aver>=0:
-#             j=aver[n_aver]
-#             n_aver-=1
-#             # n_aver-=1
-#             # j=int(aver[n_aver])
-#             for jv in range(int(nv[j])):
-#                 comp[int(listav[j,jv])]=rot-1
-#                 if ver[int(listav[j,jv])]==0:
-#                     # aver[n_aver]=listav[j,jv]
-#                     # n_aver+=1
-#                     n_aver+=1
-#                     aver[n_aver]=listav[j,jv]
-#                     ver[int(listav[j,jv])]=1
-#     return comp
-
 def rede_aleatoria(n,c):
     # criar a rede aleatoria
     # n = numero total de nodos
@@ -67,9 +36,7 @@ def rede_aleatoria(n,c):
     p = c/(n-1) # probabilide de uma aresta existir
     kmax=int(np.floor(10*c)) # numero maximo de vizinhos admitido
 
-    # listav=-np.ones((n,kmax))
-    # listav=np.zeros((n,kmax))
-    listav=np.zeros((n,kmax+1))
+    listav=np.zeros((n,kmax+1)) # ou kmax?
     nv=np.zeros(n,dtype=np.int64)
     S=np.zeros(n)
 
@@ -130,15 +97,12 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
     print(ns[0],ni[0],nr[0])
 
     for tr in range(ntransicoes-1):
-        # e_old=e
-        # print("transicao ",tr+1)
         # copiar info da transicao anterior:
         ns[tr+1]=ns[tr]
         ni[tr+1]=ni[tr]
         nr[tr+1]=nr[tr]
 
         # taxa total de transicao:
-        # vec = np.array(range(1,kmax+1))
         vec = np.array(range(kmax))
         lamb = np.sum(vec * beta * n_classe[:kmax])
         lamb += gama * n_classe[kmax]
@@ -157,7 +121,6 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
         caso = int(roleta(kmax+1,pr))
 
         i = np.random.randint(n_classe[caso])
-        # i = np.random.randint(n_classe[caso]+1) # pq??
 
         if caso != kmax:
             # um suscetivel infetou-se
@@ -169,8 +132,7 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
             e[int(classe[i,caso])] = 2 # recuperou
             ni[tr+1] -= 1
             nr[tr+1] += 1
-        # print(e)
-        # print(all(e!=e_old))
+
         classe,n_classe=constroi_classe(N,e,listav,nv,kmax)
 
     return (t,ns,ni,nr)
@@ -197,8 +159,6 @@ verticesCG=np.nonzero(comp==cg)[0]
 i=np.random.randint(S) # escolher um ao acasao
 
 e[verticesCG[i]]=1  # coloca lo como infetado <<<<< esta algo mal
-# print(e)
-# print(listav)
 
 kk,kmax=np.shape(listav) # n colunas da listav
 
@@ -207,21 +167,11 @@ classes, n_classe = constroi_classe(N,e,listav,nv,kmax)
 beta = 1/5
 gama = 1/15
 ntransicoes = int(1e4)
-# print(N, beta, gama, listav, nv, e, kmax, n_classe, classes, ntransicoes)
-# print(e)
 t,ns,ni,nr = MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classes, ntransicoes)
 
 plt.figure(1)
 plt.plot(t,ns,'rx')
 plt.plot(t,ni,'bo')
 plt.plot(t,nr,'g.')
-# plt.show()
-
-
-
-# print(e)
-# print(kmax)
-# print(n_classe)
-
-#  esta a dar so 0s nas classes pq???
+plt.show()
 
