@@ -1,19 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# copiado da Carlota, 1o plot da um bocado mal mas deve ser uma constante
-# TEM ERROS
+# copiado da Carlota, adaptado e a dar bem
 
 def fex31(N,T,Nestados):
-    # Fluxo --> n� de particulas que saem por unidade de �rea e intervalo de
-    # tempo
+    # Fluxo --> n� de particulas que saem por unidade de �rea e intervalo de tempo
 
     # dados da abertura
     dr=0.01       
     dA=np.pi*dr**2
     dt=0.01 # Intervalo de tempo 
-    r=np.zeros((N,3)) # posi��es das particulas a 3D
-    v=np.zeros((N,3))   # velocidades a 3D
+    r=np.zeros((N,3)) # posicoes das particulas a 3D
+    v=np.zeros((N,3)) # velocidades a 3D
     Fluxo=0
     erroF=0
     pressao=0
@@ -21,13 +19,12 @@ def fex31(N,T,Nestados):
     A=1
     # gerar Nestados
     for n in range(Nestados):
-        # gerar posi��es
-        r[:,0:2] = np.random.rand(N,2)-0.5 # coordenadas x e y [-1/2 1/2]
-        r[:,2] = np.random.rand(N)-1     # coordenadas z [-1 0]
+        # gerar posicoes
+        # podemos fazer desta maneira porque é um gás ideal (as coordenadas tem distribuicao uniforme)
+        r[:,0:2] = np.random.rand(N,2)-0.5   # coordenadas x e y [-1/2 1/2]
+        r[:,2] = np.random.rand(N)-1         # coordenadas z [-1 0]
         # gerar velocidades
-        # podemos fazer desta maneira porque � um g�s ideal (as coordenadas t�m distribui��o uniforme)
-        # em qualquer g�s as velocidades t�m a distribui��o de velocidades de
-        # Maxwell --> ver express�o nos slides
+        # em qualquer gas as velocidades tem a distribui��o de velocidades de Maxwell --> ver express�o nos slides
         v=np.random.randn(N,3)*np.sqrt(T)   # geramos v com a distribui��o de velocidades de Maxwell com vari�ncia proporcional � temperatura
         
         # no intervalo de tempo dt as particulas movem-se
@@ -76,8 +73,8 @@ if __name__ == "__main__":
 
 
     plt.figure(1)
-    # plt.errorbar(Tv,Fluxo,erroF,'x')
-    plt.plot(Tv,Fluxo,'x')
+    plt.errorbar(Tv,Fluxo,yerr=erroF,linestyle='',marker='x')
+    # plt.plot(Tv,Fluxo,'x')
     T=np.arange(0,10,0.1)
     Fluxo_teorico=N*np.sqrt(T/(2*np.pi))
     plt.plot(T,Fluxo_teorico,'r-')
@@ -86,14 +83,14 @@ if __name__ == "__main__":
     plt.title('Fluxo em funcao da temperatura')
 
     plt.figure(2)
-    # plt.errorbar(Tv,pressao,erroP,'x')
-    plt.plot(Tv,pressao,'x')
+    plt.errorbar(Tv,pressao,yerr=erroP,linestyle='',marker='x')
+    # plt.plot(Tv,pressao,'x')
     T=np.arange(0,10,0.1)
     pressao_teorico=N*T    # P=(N/V)KbT
     plt.plot(T,pressao_teorico,'r-')
     plt.xlabel('T')
-    plt.ylabel('Press�o')
-    plt.title('Press�o em fun��o da temperatura')
+    plt.ylabel('Pressao')
+    plt.title('Pressao em funcao da temperatura')
 
 
     plt.show()

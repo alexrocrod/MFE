@@ -1,35 +1,64 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def componentes(listav,nv):
     n,kmax=np.shape(listav)
     comp = np.zeros(n)
-    ver = np.zeros(n)
-    aver = np.zeros(n,dtype=np.int64)
-    n_aver=-1
-    rot=-1
-
+    ver=np.zeros(n,dtype=np.int64)
+    aver=np.zeros(n,dtype=np.int64)
+    n_aver=0
+    rot=0
     for i in range(n):
         if ver[i]==0:
             ver[i]==1
-            n_aver+=1
             aver[n_aver]=i
-            rot+=1
+            n_aver+=1
             comp[i]=rot
-        while n_aver>=0:
-            j=aver[n_aver]
+            rot+=1
+        while n_aver>0:
             n_aver-=1
-            # n_aver-=1
-            # j=int(aver[n_aver])
+            j=aver[n_aver]
             for jv in range(int(nv[j])):
-                comp[int(listav[j,jv])]=rot-1
+                comp[int(listav[j,jv])]=rot
                 if ver[int(listav[j,jv])]==0:
-                    # aver[n_aver]=listav[j,jv]
-                    # n_aver+=1
-                    n_aver+=1
                     aver[n_aver]=listav[j,jv]
+                    n_aver+=1
                     ver[int(listav[j,jv])]=1
+
+
     return comp
+
+
+# def componentes(listav,nv):
+#     n,kmax=np.shape(listav)
+#     comp = np.zeros(n)
+#     ver = np.zeros(n)
+#     aver = np.zeros(n,dtype=np.int64)
+#     n_aver=-1
+#     rot=-1
+
+#     for i in range(n):
+#         if ver[i]==0:
+#             ver[i]==1
+#             n_aver+=1
+#             aver[n_aver]=i
+#             rot+=1
+#             comp[i]=rot
+#         while n_aver>=0:
+#             j=aver[n_aver]
+#             n_aver-=1
+#             # n_aver-=1
+#             # j=int(aver[n_aver])
+#             for jv in range(int(nv[j])):
+#                 comp[int(listav[j,jv])]=rot-1
+#                 if ver[int(listav[j,jv])]==0:
+#                     # aver[n_aver]=listav[j,jv]
+#                     # n_aver+=1
+#                     n_aver+=1
+#                     aver[n_aver]=listav[j,jv]
+#                     ver[int(listav[j,jv])]=1
+#     return comp
 
 def rede_aleatoria(n,c):
     # criar a rede aleatoria
@@ -39,7 +68,8 @@ def rede_aleatoria(n,c):
     kmax=int(np.floor(10*c)) # numero maximo de vizinhos admitido
 
     # listav=-np.ones((n,kmax))
-    listav=np.zeros((n,kmax))
+    # listav=np.zeros((n,kmax))
+    listav=np.zeros((n,kmax+1))
     nv=np.zeros(n,dtype=np.int64)
     S=np.zeros(n)
 
