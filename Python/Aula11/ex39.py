@@ -16,13 +16,13 @@ def componentes(listav,nv):
             aver[n_aver]=i
             rot+=1
             comp[i]=rot
-        while n_aver>0:
-            j=int(aver[n_aver])
+        while n_aver>=0:
+            j=aver[n_aver]
             n_aver-=1
             # n_aver-=1
             # j=int(aver[n_aver])
             for jv in range(int(nv[j])):
-                comp[int(listav[j,jv])]=rot
+                comp[int(listav[j,jv])]=rot-1
                 if ver[int(listav[j,jv])]==0:
                     # aver[n_aver]=listav[j,jv]
                     # n_aver+=1
@@ -57,10 +57,8 @@ def rede_aleatoria(n,c):
     for rotulo in range(ncomps):
         scomp[rotulo]=(comp==rotulo).sum() 
 
-    print(comp)
-
     S = np.max(scomp)
-
+    print(np.argmax(scomp))
     return listav,nv,S/n,comp
     
 def roleta(nr,pr):
@@ -99,6 +97,7 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
     ns[0] = (e==0).sum()
     ni[0] = (e==1).sum()
     nr[0] = N - ns[0] - ni[0]
+    print(ns[0],ni[0],nr[0])
 
     for tr in range(ntransicoes-1):
         # e_old=e
@@ -109,6 +108,7 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
         nr[tr+1]=nr[tr]
 
         # taxa total de transicao:
+        # vec = np.array(range(1,kmax+1))
         vec = np.array(range(kmax))
         lamb = np.sum(vec * beta * n_classe[:kmax])
         lamb += gama * n_classe[kmax]
@@ -125,12 +125,11 @@ def MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classe, ntransic
         pr[kmax] = gama * n_classe[kmax] /lamb
         
         caso = int(roleta(kmax+1,pr))
-        # print(caso)
-        # print(pr)
-        # i = np.random.randint(n_classe[caso])
-        i = np.random.randint(n_classe[caso]+1) # pq??
 
-        if caso != kmax+1:
+        i = np.random.randint(n_classe[caso])
+        # i = np.random.randint(n_classe[caso]+1) # pq??
+
+        if caso != kmax:
             # um suscetivel infetou-se
             # escolher um dos suscetiveis:
             e[int(classe[i,caso])] = 1
@@ -179,14 +178,14 @@ beta = 1/5
 gama = 1/15
 ntransicoes = int(1e4)
 # print(N, beta, gama, listav, nv, e, kmax, n_classe, classes, ntransicoes)
-print(e)
+# print(e)
 t,ns,ni,nr = MC_t_continuo(N, beta, gama, listav, nv, e, kmax, n_classe, classes, ntransicoes)
 
 plt.figure(1)
 plt.plot(t,ns,'rx')
 plt.plot(t,ni,'bo')
 plt.plot(t,nr,'g.')
-plt.show()
+# plt.show()
 
 
 
