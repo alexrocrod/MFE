@@ -32,16 +32,14 @@ def fex31(N,T,Nestados):
         
         # no intervalo de tempo dt as particulas movem-se
         rn=r+v*dt # as particulas moveram-se uniformemente
-        # determinamos agora quais s�o as particulas que saem da caixa pela
-        # abertura
-        # condicao_saida1 = np.where(rn[:,2]>0)
-        condicao_saida1 = np.nonzero(rn[:,2]>0)
-        # condicao_saida2 = np.where(np.sqrt(rn[:,0]**2+rn[:,1]**2)<dr)
-        condicao_saida2 = np.nonzero(np.sqrt(rn[:,0]**2+rn[:,1]**2)<dr)
+
+        # determinamos agora quais s�o as particulas que saem da caixa pela abertura
+        condicao_saida1 = np.where(rn[:,2]>0)
+        condicao_saida2 = np.where(np.sqrt(rn[:,0]**2+rn[:,1]**2)<dr)
         condicao_saida = np.intersect1d(condicao_saida1,condicao_saida2)
-        # condicao = np.where(rn[:,2]>0) # aqui consideramos todas as particulas que batem na parede
-        condicao = np.nonzero(rn[:,2]>0) # aqui consideramos todas as particulas que batem na parede
-        numero = np.sum(condicao_saida) # n� de particulas que saem
+        numero = np.count_nonzero(condicao_saida) # n� de particulas que saem
+
+        condicao = np.where(rn[:,2]>0) # aqui consideramos todas as particulas que batem na parede
         #a)
         Fluxo += numero / (dA * dt)
         erroF += (numero/ (dA * dt))**2
