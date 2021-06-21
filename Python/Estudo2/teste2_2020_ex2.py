@@ -35,32 +35,7 @@ def rg(N, c):
 
     return listv,nv,lista_sitios
 
-
-# def componentes(N,listav, nv):
-#     lista_sitios=np.zeros(N)
-#     ip=0 # ultimo analisado
-#     label=0 # label das componentes
-#     while ip<N:
-#         if lista_sitios[ip]==0: # ainda nao foi analisado
-#             lista_sitios[ip]=label; #atribui label
-#             # cria lista de vizinhos que necessariamente ainda nao tem label
-#             la=list(listav[ip,:nv[ip]])
-#             lista_sitios[la]=label  # da o mesmo label aos vizinhos
-#             na=len(la)
-#             ip+=1
-#             label+=1; #aumenta label
-#             #analisa a lista enquanto ela tiver sitios  
-#             while na>0:
-#                 i=la[0]  
-#                 la=la[1:]  #comeca pelo primeiro e remove-o da lista
-#                 la.append(listav[i,lista_sitios[listav[i,:nv[i]]==0]]) # adiciona a lista os vizinhos  
-#                 #que ainda nao foram colocados na lista
-                
-#                 #atribui o mesmo label aos novos membros
-#                 lista_sitios[listav[i,lista_sitios[listav[i,:nv[i]]==0]]]=label
-                
-#                 na=len(la) #determina o novo tamanho da lista
-#     return lista_sitios
+# componentes do sor precisa de muitas alteracoes para traduzir
 
 def componentes(n,listav,nv):
     comp = np.zeros(n)
@@ -85,49 +60,48 @@ def componentes(n,listav,nv):
                     aver[n_aver]=listav[j,jv]
                     n_aver+=1
                     ver[int(listav[j,jv])]=1
-
-
     return comp
 
-Nv=[1e3, 5e3, 1e4]
-strplot=['k.','gx','b+']
+
+if __name__ == '__main__':
+    Nv=[1e3, 5e3, 1e4]
+    strplot=['k.','gx','b+']
+
+    for i in range(len(Nv)):
+        N=int(Nv[i])
+        ic=0
+        cv=np.arange(0.5,2.1,0.1)
+
+        S=np.zeros(len(cv))
+        St=np.zeros(len(cv))
+        susc=np.zeros(len(cv))
+
+        for c in cv:
+            listv,nv,lista_sitios=rg(N, c)
+            lsitios_set=list(set(lista_sitios))
+            ncomp=len(lsitios_set)
+            print('numero de componentes=',ncomp)
+
+            tamanho_comp=np.zeros(ncomp)
+            for j in range(ncomp):
+                tamanho_comp[j]=(lista_sitios==lsitios_set[j]).sum()
+            
+            S[ic]=np.max(tamanho_comp)/N
+            tamanho_comp = -np.sort(-tamanho_comp) # reverse sort
+
+            susc[ic]=np.sum(tamanho_comp[1:ncomp]**2)/np.sum(tamanho_comp[1:ncomp])
+
+            St[ic]=pfixo(c)
+            print(f'S={S[ic]} Valor teorico={St[ic]}')
+            ic+=1
 
 
-for i in range(len(Nv)):
-    N=int(Nv[i])
-    ic=0
-    cv=np.arange(0.5,2.1,0.1)
+        plt.figure(1)
+        plt.plot(cv,S,strplot[i],cv, St,'r-')
+        plt.xlabel('c'); plt.ylabel('S')
 
-    S=np.zeros(len(cv))
-    St=np.zeros(len(cv))
-    susc=np.zeros(len(cv))
+        plt.figure(2)
+        plt.plot(cv,susc,strplot[i])
+        plt.xlabel('c'); plt.ylabel('Susc')
 
-    for c in cv:
-        listv,nv,lista_sitios=rg(N, c)
-        lsitios_set=list(set(lista_sitios))
-        ncomp=len(lsitios_set)
-        print('numero de componentes=',ncomp)
-
-        tamanho_comp=np.zeros(ncomp)
-        for j in range(ncomp):
-            tamanho_comp[j]=(lista_sitios==lsitios_set[j]).sum()
-        
-        S[ic]=np.max(tamanho_comp)/N
-        tamanho_comp = -np.sort(-tamanho_comp) # reverse sort
-
-        susc[ic]=np.sum(tamanho_comp[1:ncomp]**2)/np.sum(tamanho_comp[1:ncomp])
-
-        St[ic]=pfixo(c)
-        print(f'S={S[ic]} Valor teorico={St[ic]}')
-        ic+=1
-
-
-    plt.figure(1)
-    plt.plot(cv,S,strplot[i],cv, St,'r-')
-    plt.xlabel('c'); plt.ylabel('S')
-
-    plt.figure(2)
-    plt.plot(cv,susc,strplot[i])
-    plt.xlabel('c'); plt.ylabel('Susc')
-
-plt.show()
+    plt.show()

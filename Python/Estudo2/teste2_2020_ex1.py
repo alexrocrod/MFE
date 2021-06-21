@@ -41,26 +41,27 @@ def mc(npassos,nequi,T):
     h=h/(sum(h)*(xh[1]-xh[0]))
     return h,xh,xt,Et
 
+if __name__ == '__main__':
 
-npassos=int(1e6)
-nequi=int(1e4)
-it=0
-Tv=np.arange(0.01,2,0.05)
+    npassos=int(1e6)
+    nequi=int(1e4)
+    it=0
+    Tv=np.arange(0.01,2,0.05)
 
-Em=np.zeros(len(Tv))
+    Em=np.zeros(len(Tv))
 
-for T in Tv:
-    h,xh,xt,Et=mc(npassos,nequi,T)
-    Em[it]=np.mean(Et)
-    it+=1
+    for T in Tv:
+        h,xh,xt,Et=mc(npassos,nequi,T)
+        Em[it]=np.mean(Et)
+        it+=1
 
-x=np.linspace(xh[0],xh[-1],len(xh)*10)
-Pst=np.exp(-energia(x)/T); 
-Pst=Pst/(sum(Pst)*(x[1]-x[0]))
-plt.figure(1)
-plt.plot(xh,h,'k.',x,Pst,'r-'); 
-plt.xlabel('x'); plt.ylabel('p(x)')
-plt.figure(2)
-plt.plot(Tv,Em,'k.')
-plt.xlabel('T'); plt.ylabel('Em')
-plt.show()
+    x=np.linspace(xh[0],xh[-1],len(xh)*10)
+    Pst=np.exp(-energia(x)/T); 
+    Pst=Pst/(sum(Pst)*(x[1]-x[0]))
+    plt.figure(1)
+    plt.plot(xh,h,'k.',x,Pst,'r-'); 
+    plt.xlabel('x'); plt.ylabel('p(x)')
+    plt.figure(2)
+    plt.plot(Tv,Em,'k.')
+    plt.xlabel('T'); plt.ylabel('Em')
+    plt.show()
