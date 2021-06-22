@@ -5,10 +5,12 @@ function ex1()
 
     npassos=1000000; nequi=10000;
     it=0;
-    Tv=[0.01:0.05:2];
+    Tv=0.01:0.05:2;
+    Em = zeros(numel(Tv),1);
     for T=Tv
         it=it+1;
-        [h,xh,xt,Et]=mc(npassos,nequi,T);
+        %[h,xh,xt,Et]=mc(npassos,nequi,T);
+        [h,xh,Et]=mc(npassos,nequi,T);
         Em(it)=mean(Et);
         x=linspace(xh(1),xh(end),numel(xh)*10);
         Pst=exp(-energia(x)/T); Pst=Pst/(sum(Pst)*(x(2)-x(1)));
@@ -22,10 +24,12 @@ function ex1()
     end
 end
 
-function [h,xh,xt,Et]=mc(npassos,nequi,T)
+%function [h,xh,xt,Et]=mc(npassos,nequi,T)
+function [h,xh,Et]=mc(npassos,nequi,T)
     x=-1; dx=0.5;E=energia(x);
     nm=0; nac=0;
-    
+    xt=zeros(npassos-nequi,1);
+    Et=zeros(npassos-nequi,1);
     for t=1:npassos
         xn=x+ dx*(rand(1)-0.5); En=energia(xn);
         dE=En-E;
